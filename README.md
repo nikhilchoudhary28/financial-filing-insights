@@ -63,6 +63,16 @@ The app processes the uploaded PDF for the current Streamlit session. It does no
 
 KPI extraction and growth/risk matching are best-effort text processing, not audited financial data or investment advice. Verify values against the filing, including its reporting period, units, and tables.
 
+## Tests
+
+Run the filing-analysis unit tests with Python's standard-library test runner:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The tests cover company and fiscal-year detection, table KPI extraction, negative parenthetical values, growth/risk statement matching, summaries, and both filing-excerpt and mocked OpenAI Q&A paths. They do not require a live API key, PostgreSQL, or Docker.
+
 ## Optional PostgreSQL + pgvector workflow
 
 The dashboard upload flow does not require PostgreSQL. The repository also contains scripts for a separate vector-indexing pipeline:
@@ -98,11 +108,14 @@ The SEC downloader is optional. SEC archive requests may be blocked depending on
 ├── src/
 │   ├── config.py             # Environment and database configuration
 │   ├── db.py                 # PostgreSQL + pgvector schema setup
+│   ├── filing_analysis.py    # Filing text extraction and question answering
 │   ├── download_sec_filing.py
 │   ├── embed_and_index.py
 │   ├── extract_kpis.py
 │   ├── parser.py
 │   └── sample_workflow.py
+├── tests/
+│   └── test_filing_analysis.py
 ├── docker-compose.yml
 ├── requirements.txt
 └── .env.example
